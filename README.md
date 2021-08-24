@@ -1,5 +1,12 @@
-1) python -m venv env
-2) source env/bin/activate for unix systems
-2) env/Scripts/activate
-3) pip install fastapi
-4) pip install uvicorn[standard]
+### Start a Virtual Environment
+```python -m venv env```
+
+### Activate your Virtual Environment
+Unix: ```source env/bin/activate```<br>
+Windows: ```env/Scripts/activate```
+
+### Download Dependencies
+```pip install -r requirements.txt```
+
+### Run Web App
+```uvicorn main:app --reload```
