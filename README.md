@@ -6,8 +6,7 @@ Unix: ```source env/bin/activate```<br>
 Windows: ```env/Scripts/activate```
 
 ### Download Dependencies
-```pip install fastapi```<br>
-```pip install uvicorn[standard]```
+```pip install -r requirements.txt```
 
 ### Run Web App
 ```uvicorn main:app --reload```
