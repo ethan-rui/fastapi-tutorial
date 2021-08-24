@@ -2,11 +2,11 @@
 ```python -m venv env```
 
 ### Activate your Virtual Environment
-Unix: ```source env/bin/activate```
+Unix: ```source env/bin/activate```<br>
 Windows: ```env/Scripts/activate```
 
 ### Download Dependencies
-```pip install fastapi```
+```pip install fastapi```<br>
 ```pip install uvicorn[standard]```
 
 ### Run Web App
