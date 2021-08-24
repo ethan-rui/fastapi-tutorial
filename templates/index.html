@@ -1,0 +1,18 @@
+{% extends 'layouts/main.html' %}
+{% block content %}
+<div class="container">
+    <div class="row mt-4">
+        <h3 class="mb-4">View Notes</h3>
+        {% for i in notes %}
+        <div class="col-4">
+            <div class="col-12 shadow p-3 mb-5 bg-white rounded">
+                <b>{{ notes[i]["subject"] }}</b>
+                <p>{{ notes[i]["content"] }}</p>
+                <br>
+                <p>{{ notes[i]["date_created"] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
