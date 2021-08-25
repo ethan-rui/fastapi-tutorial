@@ -9,7 +9,13 @@
                 <b>{{ notes[i]["subject"] }}</b>
                 <p>{{ notes[i]["content"] }}</p>
                 <br>
-                <p>{{ notes[i]["date_created"] }}</p>
+                <p class="m-0">Created On: <b>{{ notes[i]["date_created"] }}</b></p>
+                <p>Updated On: <b>{{ notes[i]["date_updated"] }}</b></p>
+                <form action="/delete" class="d-inline-block" method="POST">
+                    <input type="hidden" name="uuid" value="{{ notes[i]['id'] }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <a class="btn btn-warning d-inline-block" href="/update/{{ notes[i]['id'] }}">Update</a>
             </div>
         </div>
         {% endfor %}

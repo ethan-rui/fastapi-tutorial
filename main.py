@@ -27,14 +27,14 @@ def page_home(request: Request):
 
 
 @app.get("/create", response_class=HTMLResponse)
-def page_create_notes(request: Request):
+def page_notes_create(request: Request):
     return templates.TemplateResponse(
         "create_notes.html", {"request": request, "title": "Create Notes"}
     )
 
 
 @app.post("/create")
-def create_notes(subject: str = Form(...), content: str = Form(...)):
+def notes_create(subject: str = Form(...), content: str = Form(...)):
     with shelve.open(f"{BASEDIR}/database/db") as db:
         uuid = str(uuid4())[:8]
         db[uuid] = {
@@ -42,6 +42,43 @@ def create_notes(subject: str = Form(...), content: str = Form(...)):
             "subject": subject,
             "content": content,
             "date_created": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+            "date_updated": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         }
         db.close()
-    return RedirectResponse(url="/create", status_code=302)
+    return RedirectResponse(url="/", status_code=302)
+
+
+@app.get("/update/{uuid}")
+def page_notes_update(request: Request, uuid):
+    with shelve.open(f"{BASEDIR}/database/db") as db:
+        target = db[uuid]
+        db.close()
+    print(target)
+    return templates.TemplateResponse(
+        "update_notes.html", {"request": request, "data": target}
+    )
+
+
+@app.post("/update")
+def notes_update(
+    uuid: str = Form(...), subject: str = Form(...), content: str = Form(...)
+):
+    with shelve.open(f"{BASEDIR}/database/db") as db:
+        db[uuid] = {
+            "id": uuid,
+            "subject": subject,
+            "content": content,
+            "date_created": db[uuid]["date_created"],
+            "date_updated": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        }
+        db.close()
+    return RedirectResponse(url="/", status_code=302)
+
+
+@app.post("/delete")
+def notes_delete(uuid: str = Form(...)):
+    print(uuid)
+    with shelve.open(f"{BASEDIR}/database/db") as db:
+        del db[uuid]
+        db.close()
+    return RedirectResponse(url="/", status_code=302)
