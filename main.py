@@ -10,6 +10,7 @@ from uuid import uuid4
 from datetime import datetime
 
 BASEDIR = os.getcwd()
+DBDIR = f"{BASEDIR}/database/db"
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -18,7 +19,7 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 def page_home(request: Request):
-    db = shelve.open(f"{BASEDIR}/database/db")
+    db = shelve.open(DBDIR)
     notes = dict(db)
     db.close()
     return templates.TemplateResponse(
@@ -35,7 +36,7 @@ def page_notes_create(request: Request):
 
 @app.post("/create")
 def notes_create(subject: str = Form(...), content: str = Form(...)):
-    with shelve.open(f"{BASEDIR}/database/db") as db:
+    with shelve.open(DBDIR) as db:
         uuid = str(uuid4())[:8]
         db[uuid] = {
             "id": uuid,
@@ -50,7 +51,7 @@ def notes_create(subject: str = Form(...), content: str = Form(...)):
 
 @app.get("/update/{uuid}")
 def page_notes_update(request: Request, uuid):
-    with shelve.open(f"{BASEDIR}/database/db") as db:
+    with shelve.open(DBDIR) as db:
         target = db[uuid]
         db.close()
     print(target)
@@ -63,7 +64,7 @@ def page_notes_update(request: Request, uuid):
 def notes_update(
     uuid: str = Form(...), subject: str = Form(...), content: str = Form(...)
 ):
-    with shelve.open(f"{BASEDIR}/database/db") as db:
+    with shelve.open(DBDIR) as db:
         data = db[uuid]
         data["subject"] = subject
         data["content"] = content
@@ -77,7 +78,7 @@ def notes_update(
 @app.post("/delete")
 def notes_delete(uuid: str = Form(...)):
     print(uuid)
-    with shelve.open(f"{BASEDIR}/database/db") as db:
+    with shelve.open(DBDIR) as db:
         del db[uuid]
         db.close()
     return RedirectResponse(url="/", status_code=302)
