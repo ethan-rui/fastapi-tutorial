@@ -64,13 +64,12 @@ def notes_update(
     uuid: str = Form(...), subject: str = Form(...), content: str = Form(...)
 ):
     with shelve.open(f"{BASEDIR}/database/db") as db:
-        db[uuid] = {
-            "id": uuid,
-            "subject": subject,
-            "content": content,
-            "date_created": db[uuid]["date_created"],
-            "date_updated": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-        }
+        data = db[uuid]
+        data["subject"] = subject
+        data["content"] = content
+        data["date_updated"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+        db[uuid] = data
         db.close()
     return RedirectResponse(url="/", status_code=302)
 
