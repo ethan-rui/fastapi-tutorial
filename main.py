@@ -36,24 +36,24 @@ def page_notes_create(request: Request):
 
 @app.post("/create")
 def notes_create(subject: str = Form(...), content: str = Form(...)):
-    with shelve.open(DBDIR) as db:
-        uuid = str(uuid4())[:8]
-        db[uuid] = {
-            "id": uuid,
-            "subject": subject,
-            "content": content,
-            "date_created": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-            "date_updated": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-        }
-        db.close()
+    db = shelve.open(DBDIR)
+    uuid = str(uuid4())[:8]
+    db[uuid] = {
+        "id": uuid,
+        "subject": subject,
+        "content": content,
+        "date_created": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        "date_updated": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+    }
+    db.close()
     return RedirectResponse(url="/", status_code=302)
 
 
 @app.get("/update/{uuid}")
 def page_notes_update(request: Request, uuid):
-    with shelve.open(DBDIR) as db:
-        target = db[uuid]
-        db.close()
+    db = shelve.open(DBDIR)
+    target = db[uuid]
+    db.close()
     print(target)
     return templates.TemplateResponse(
         "update_notes.html", {"request": request, "data": target}
@@ -64,21 +64,21 @@ def page_notes_update(request: Request, uuid):
 def notes_update(
     uuid: str = Form(...), subject: str = Form(...), content: str = Form(...)
 ):
-    with shelve.open(DBDIR) as db:
-        data = db[uuid]
-        data["subject"] = subject
-        data["content"] = content
-        data["date_updated"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    db = shelve.open(DBDIR)
+    data = db[uuid]
+    data["subject"] = subject
+    data["content"] = content
+    data["date_updated"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-        db[uuid] = data
-        db.close()
+    db[uuid] = data
+    db.close()
     return RedirectResponse(url="/", status_code=302)
 
 
 @app.post("/delete")
 def notes_delete(uuid: str = Form(...)):
     print(uuid)
-    with shelve.open(DBDIR) as db:
-        del db[uuid]
-        db.close()
+    db = shelve.open(DBDIR)
+    del db[uuid]
+    db.close()
     return RedirectResponse(url="/", status_code=302)
