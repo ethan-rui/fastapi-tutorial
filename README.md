@@ -3,7 +3,7 @@
 
 ### Activate your Virtual Environment
 Unix: ```source env/bin/activate```<br>
-Windows: ```env/Scripts/activate```
+Windows: ```"env/Scripts/activate"```
 
 ### Download Dependencies
 ```pip install -r requirements.txt```
