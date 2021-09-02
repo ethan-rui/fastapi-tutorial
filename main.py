@@ -66,6 +66,7 @@ def notes_update(
 ):
     db = shelve.open(DBDIR)
     data = db[uuid]
+    
     data["subject"] = subject
     data["content"] = content
     data["date_updated"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
