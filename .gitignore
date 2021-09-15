@@ -1,2 +1,5 @@
 /env
 __pycache__/
+*.dir
+*.bak
+*.dat

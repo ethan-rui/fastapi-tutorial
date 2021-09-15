@@ -1,0 +1,26 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-2"></div>
+        <div class="col-lg-6 col-md-8 mt-4">
+            <h3 class="mb-5">Create Notes</h3>
+            <form class="row g-3 shadow p-3 mb-5 bg-white rounded" method="POST" action="/create">
+                <div class="col-12">
+                    <label for="subject" class="form-label">Subject</label>
+                    <input type="text" required class="form-control" id="subject" name="subject" required>
+                </div>
+                <div class="col-12">
+                    <label for="content" class="form-label">Content</label>
+                    <textarea rows="5" type="text" class="form-control" id="content" name="content"
+                        required></textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-3 col-md-2"></div>
+    </div>
+</div>
+{% endblock content %}

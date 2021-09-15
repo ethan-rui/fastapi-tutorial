@@ -13,9 +13,7 @@ BASEDIR = os.getcwd()
 DBDIR = f"{BASEDIR}/database/db"
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
-
+templates = Jinja2Templates(directory=f"{BASEDIR}/templates")
 
 @app.get("/", response_class=HTMLResponse)
 def page_home(request: Request):
@@ -23,16 +21,20 @@ def page_home(request: Request):
     notes = dict(db)
     db.close()
     return templates.TemplateResponse(
-        "index.html", {"request": request, "title": "View Notes", "notes": notes}
+        "view_notes.html", {"request": request, "title": "View Notes", "notes": notes}
     )
 
+@app.get("/about", response_class=HTMLResponse)
+def page_about(request: Request):
+    return templates.TemplateResponse(
+        "about.html", {"request": request, "title": "About Me"}
+    )
 
 @app.get("/create", response_class=HTMLResponse)
 def page_notes_create(request: Request):
     return templates.TemplateResponse(
         "create_notes.html", {"request": request, "title": "Create Notes"}
     )
-
 
 @app.post("/create")
 def notes_create(subject: str = Form(...), content: str = Form(...)):
@@ -46,8 +48,15 @@ def notes_create(subject: str = Form(...), content: str = Form(...)):
         "date_updated": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
     }
     db.close()
-    return RedirectResponse(url="/", status_code=302)
+    return RedirectResponse(url="/create", status_code=302)
 
+@app.post("/delete")
+def notes_delete(uuid: str = Form(...)):
+    print(uuid)
+    db = shelve.open(DBDIR)
+    del db[uuid]
+    db.close()
+    return RedirectResponse(url="/", status_code=302)
 
 @app.get("/update/{uuid}")
 def page_notes_update(request: Request, uuid):
@@ -62,24 +71,15 @@ def page_notes_update(request: Request, uuid):
 
 @app.post("/update")
 def notes_update(
-    uuid: str = Form(...), subject: str = Form(...), content: str = Form(...)
+        uuid: str = Form(...), subject: str = Form(...), content: str = Form(...)
 ):
     db = shelve.open(DBDIR)
     data = db[uuid]
-    
+
     data["subject"] = subject
     data["content"] = content
     data["date_updated"] = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
     db[uuid] = data
-    db.close()
-    return RedirectResponse(url="/", status_code=302)
-
-
-@app.post("/delete")
-def notes_delete(uuid: str = Form(...)):
-    print(uuid)
-    db = shelve.open(DBDIR)
-    del db[uuid]
     db.close()
     return RedirectResponse(url="/", status_code=302)
