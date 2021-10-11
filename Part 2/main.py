@@ -3,6 +3,8 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
+import uvicorn
+
 import os
 
 BASEDIR = os.getcwd()
@@ -15,3 +17,7 @@ def page_about(request: Request):
     return templates.TemplateResponse(
         "about.html", {"request": request, "title": "About Me"}
     )
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True)

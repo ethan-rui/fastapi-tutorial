@@ -4,6 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
 
+import uvicorn
+
 import os
 import shelve
 from uuid import uuid4
@@ -49,3 +51,7 @@ def notes_create(subject: str = Form(...), content: str = Form(...)):
     }
     db.close()
     return RedirectResponse(url="/create", status_code=302)
+
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True)
