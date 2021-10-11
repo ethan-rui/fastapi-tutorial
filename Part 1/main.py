@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from starlette.requests import Request
 
+import uvicorn
+
 app = FastAPI()
 
 @app.get("/about", response_class=HTMLResponse)
@@ -12,3 +14,6 @@ def page_about(request: Request):
         </h1>
         """
 
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", reload=True)
