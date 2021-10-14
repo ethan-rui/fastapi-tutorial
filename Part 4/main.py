@@ -26,12 +26,6 @@ def page_home(request: Request):
         "view_notes.html", {"request": request, "title": "View Notes", "notes": notes}
     )
 
-@app.get("/about", response_class=HTMLResponse)
-def page_about(request: Request):
-    return templates.TemplateResponse(
-        "about.html", {"request": request, "title": "About Me"}
-    )
-
 @app.get("/create", response_class=HTMLResponse)
 def page_notes_create(request: Request):
     return templates.TemplateResponse(

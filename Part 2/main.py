@@ -12,7 +12,7 @@ BASEDIR = os.getcwd()
 app = FastAPI()
 templates = Jinja2Templates(directory=f"{BASEDIR}/templates")
 
-@app.get("/about", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 def page_about(request: Request):
     return templates.TemplateResponse(
         "about.html", {"request": request, "title": "About Me"}
