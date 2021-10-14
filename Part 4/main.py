@@ -1,10 +1,10 @@
+import uvicorn
+
 from fastapi import FastAPI, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.requests import Request
-
-import uvicorn
 
 import os
 import shelve
