@@ -7,7 +7,7 @@ from starlette.requests import Request
 app = FastAPI()
 
 @app.get("/", response_class=HTMLResponse)
-def page_home(request: Request):
+def page_home():
     return """
         <h1>
             Hello my name is Ethan
