@@ -2,7 +2,6 @@ import uvicorn
 
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
-from starlette.requests import Request
 
 app = FastAPI()
 
