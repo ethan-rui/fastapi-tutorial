@@ -18,9 +18,9 @@ app = FastAPI()
 templates = Jinja2Templates(directory=f"{BASEDIR}/templates")
 
 @app.get("/", response_class=HTMLResponse)
-def page_about(request: Request):
+def page_home(request: Request):
     return templates.TemplateResponse(
-        "about.html", {"request": request, "title": "About Me"}
+        "home.html", {"request": request, "title": "About Me"}
     )
 
 @app.get("/create", response_class=HTMLResponse)
